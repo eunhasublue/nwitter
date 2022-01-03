@@ -3,9 +3,8 @@ import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import Auth from "../routes/Auth";
 import Home from "../routes/Home";
 
-const AppRouter = () => {
-  // 처음엔 비로그인 상태이기 때문에 useState가 false인 상태
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+// router에는 router만 있기 위해 로그인은 app.js로 이동하고 props로 받음
+const AppRouter = ({ isLoggedIn }) => {
   return (
     <Router>
       <Switch>
