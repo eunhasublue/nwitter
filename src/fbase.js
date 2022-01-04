@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/auth";
+import "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -15,6 +16,9 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
+export const firebaseInstance = firebase;
+
 // auth Service를 많이 호출할 예정이라 여기에 기입
 // Authentication 기능을 제공해줌
 export const authService = firebase.auth();
+export const dbService = firebase.firestore();

@@ -1,6 +1,6 @@
 // 로그인이 되어있지 않다면 로그인을 위한 부분을 보여줄 것임
 
-import { authService } from "fbase";
+import { authService, firebaseInstance } from "fbase";
 import React, { useState } from "react";
 
 // Auth 컴포넌트를 입력할때 위에 자동으로 import 해주기 위해서
@@ -43,6 +43,19 @@ const Auth = () => {
   };
   // newAccount의 이전 값을 가져와서, 그 값에 반대되는 것을 리턴
   const toggleAccount = () => setNewAccount((prev) => !prev);
+  const onSocialClick = async (event) => {
+    const {
+      target: { name },
+    } = event;
+    let provider;
+    if (name === "google") {
+      provider = new firebaseInstance.auth.GoogleAuthProvider();
+    } else if (name === "github") {
+      provider = new firebaseInstance.auth.GithubAuthProvider();
+    }
+    const data = await authService.signInWithPopup(provider);
+    console.log(data);
+  };
   return (
     <div>
       <form onSubmit={onSubmit}>
@@ -72,8 +85,12 @@ const Auth = () => {
         {newAccount ? "Sign In" : "Create Account"}
       </span>
       <div>
-        <button>Continue with Google</button>
-        <button>Continue with Github</button>
+        <button onClick={onSocialClick} name="google">
+          Continue with Google
+        </button>
+        <button onClick={onSocialClick} name="github">
+          Continue with Github
+        </button>
       </div>
     </div>
   );
@@ -98,3 +115,9 @@ setPersistence
 2-2. session : 탭이 열려있는 동안에는 사용자 정보를 기억하는 것을 의미
 2-3. none : 유저를 기억하지 않음
 */
+
+// 이메일, 구굴, 깃헙으로 로그인 구현.
+// signInWithRedirect
+// 1. 두가지 옵션
+// 1-1. popup
+// 1-2. redirect

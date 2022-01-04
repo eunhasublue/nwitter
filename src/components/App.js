@@ -15,6 +15,7 @@ function App() {
   // 반환값 : User or null
   // 아직 여기서는 실제로 로그인,로그아웃에 대해 잘 모르기 때문
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userObj, setUserObj] = useState(null);
 
   // 그래서 초기화되는걸 기다리려면 아래 코드를 입력
   // 여기서 USER의 변화를 listen 해야 됨.
@@ -25,6 +26,7 @@ function App() {
     authService.onAuthStateChanged((user) => {
       if (user) {
         setIsLoggedIn(true);
+        setUserObj(user);
       } else {
         setIsLoggedIn(false);
       }
@@ -34,7 +36,11 @@ function App() {
   return (
     <>
       {/* init이 false라면(초기화) roter를 숨김 */}
-      {init ? <AppRouter isLoggedIn={isLoggedIn} /> : "Initializing..."}
+      {init ? (
+        <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} />
+      ) : (
+        "Initializing..."
+      )}
       <footer>&copy;{new Date().getFullYear()} Nwitter</footer>
     </>
   );
