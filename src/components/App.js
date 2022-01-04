@@ -25,23 +25,38 @@ function App() {
     // 여기서 create account or log in을 눌렀거나 아니면 이미 로그인 되어 있거나 firebase는 스스로 초기화하는 것을 끝냈기 때문
     authService.onAuthStateChanged((user) => {
       if (user) {
-        setIsLoggedIn(true);
-        setUserObj(user);
-      } else {
-        setIsLoggedIn(false);
+        setUserObj({
+          displayName: user.displayName,
+          uid: user.uid,
+          updateProfiel: (args) => user.updateProfile(args),
+        });
       }
       setInit(true);
     });
   }, []);
+
+  // user 이름을 업데이트했을 때, 상단 {}의 profile의 이름에 바로 뜨게 하기 위해
+  const refreshUser = () => {
+    const user = authService.currentUser;
+    setUserObj({
+      displayName: user.displayName,
+      uid: user.uid,
+      updateProfiel: (args) => user.updateProfile(args),
+    });
+  };
   return (
     <>
       {/* init이 false라면(초기화) roter를 숨김 */}
       {init ? (
-        <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} />
+        <AppRouter
+          refreshUser={refreshUser}
+          isLoggedIn={isLoggedIn}
+          userObj={userObj}
+        />
       ) : (
         "Initializing..."
       )}
-      <footer>&copy;{new Date().getFullYear()} Nwitter</footer>
+      {/* <footer>&copy;{new Date().getFullYear()} Nwitter</footer> */}
     </>
   );
 }

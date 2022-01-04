@@ -6,10 +6,10 @@ import Navigation from "components/Navigation";
 import Profile from "routes/Profile";
 
 // router에는 router만 있기 위해 로그인은 app.js로 이동하고 props로 받음
-const AppRouter = ({ isLoggedIn, userObj }) => {
+const AppRouter = ({ refreshUser, isLoggedIn, userObj }) => {
   return (
     <Router>
-      {isLoggedIn && <Navigation />}
+      {isLoggedIn && <Navigation userObj={userObj} />}
       <Switch>
         {/* 사용자가 로그인 되어있다면 <Home/> 비로그인 상태면 <Auth/>*/}
         {isLoggedIn ? (
@@ -19,7 +19,7 @@ const AppRouter = ({ isLoggedIn, userObj }) => {
               <Home userObj={userObj} />
             </Route>
             <Route exact path="/profile">
-              <Profile />
+              <Profile userObj={userObj} />
             </Route>
           </>
         ) : (
